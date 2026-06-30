@@ -89,30 +89,30 @@ This screenshot shows the `-O` flag (`nmap -O 127.0.0.1`), which performs **oper
 This scan completed in 2.49 seconds and used TCP/IP stack fingerprinting to determine the likely operating system of the target host.
 
 ---
-Port Analysis
-Port 135/TCP
+**Port Analysis**
+**Port 135/TCP**
 
-Detected Service
+**Detected Service**
 
 Microsoft Windows RPC (Remote Procedure Call)
 
-Purpose
+**Purpose**
 
 Used by Windows for communication between software components and services.
 Required for many Windows management tasks.
 
-Risk Level
+**Risk Level**
 
 Medium
 
-Potential Threats
+**Potential Threats**
 
 Frequently targeted during network reconnaissance.
 Can expose information about Windows services.
 Historically associated with remote code execution vulnerabilities when exposed to untrusted networks.
 Should not be accessible from the Internet.
 
-Recommendation
+**Recommendation**
 
 Keep enabled if Windows requires it.
 Block external access using Windows Defender Firewall.
@@ -120,21 +120,21 @@ Restrict access to trusted internal networks only.
 Ensure Windows is fully patched.
 Port 445/TCP
 
-Detected Service
+**Detected Service**
 
 Microsoft-DS (Server Message Block - SMB)
 
-Purpose
+**Purpose**
 
 File and printer sharing.
 Windows networking.
 Active Directory communications.
 
-Risk Level
+**Risk Level**
 
 High
 
-Potential Threats
+**Potential Threats**
 
 One of the most attacked Windows services.
 Used by malware such as:
@@ -143,7 +143,7 @@ NotPetya
 EternalBlue exploits
 Can allow unauthorized file access if misconfigured.
 
-Recommendation
+**Recommendation**
 
 Disable File and Printer Sharing if not needed.
 Block TCP 445 from public networks.
@@ -153,20 +153,20 @@ Disable SMBv1.
 Keep Windows updated.
 Port 1583/TCP
 
-Detected Service
+**Detected Service**
 
 Pervasive SQL Server – Relational Engine (encrypted)
 Nmap identified it as psql
 
-Purpose
+**Purpose**
 
 Database engine used by Pervasive/Actian Zen database applications.
 
-Risk Level
+**Risk Level**
 
 Medium to High
 
-Potential Threats
+**Potential Threats**
 
 Database services should not be publicly accessible.
 Could expose:
@@ -175,7 +175,7 @@ application data
 authentication information
 May be vulnerable if outdated.
 
-Recommendation
+**Recommendation**
 
 Verify the application actually requires this database.
 Restrict access to localhost or trusted hosts.
@@ -183,41 +183,41 @@ Update the database software.
 Stop or uninstall the service if no longer used.
 Port 3351/TCP
 
-Detected Service
+**Detected Service**
 
 Pervasive SQL Btrieve Engine
 
-Purpose
+**Purpose**
 
 Legacy database engine used by older business software.
 
-Risk Level
+**Risk Level**
 
 Medium
 
-Potential Threats
+**Potential Threats**
 
 Legacy database engines may contain unpatched vulnerabilities.
 Unauthorized users could access database files if improperly configured.
 
-Recommendation
+**Recommendation**
 
 Verify whether any installed application still depends on it.
 Restrict network access.
 Remove the service if it is no longer required.
 Port 7070/TCP
 
-Detected Service
+**Detected Service**
 
 SSL/RealServer (uncertain detection)
 
-Nmap reports:
+**Nmap reports:**
 
 ssl/realserver?
 
 This means the service could not be identified with certainty.
 
-Purpose
+**Purpose**
 Possible uses include:
 
 Web application
@@ -226,23 +226,23 @@ Custom application
 Development server
 Third-party software
 
-Risk Level
+**Risk Level**
 
 Unknown (requires investigation)
 
-Potential Threats
+**Potential Threats**
 
 Any unknown listening service should be investigated.
 Could expose a web interface.
 Could have authentication weaknesses.
 Could belong to software no longer in use.
 
-Recommendation
+**Recommendation**
 Identify the owning process:
 
 netstat -ano | find ":7070"
 
-Then determine the process:
+**Then determine the process:**
 
 tasklist /FI "PID eq <PID>"
 
@@ -250,7 +250,7 @@ Or in PowerShell:
 
 Get-Process -Id <PID>
 
-If the application is unnecessary:
+**If the application is unnecessary:**
 
 Stop the service.
 Disable it.
