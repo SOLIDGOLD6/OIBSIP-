@@ -118,8 +118,9 @@ Keep enabled if Windows requires it.
 Block external access using Windows Defender Firewall.
 Restrict access to trusted internal networks only.
 Ensure Windows is fully patched.
-Port 445/TCP
 
+
+**Port 445/TCP**
 **Detected Service**
 
 Microsoft-DS (Server Message Block - SMB)
@@ -151,8 +152,9 @@ Use Windows Firewall.
 Enable SMB signing where appropriate.
 Disable SMBv1.
 Keep Windows updated.
-Port 1583/TCP
 
+
+**Port 1583/TCP**
 **Detected Service**
 
 Pervasive SQL Server – Relational Engine (encrypted)
@@ -181,8 +183,9 @@ Verify the application actually requires this database.
 Restrict access to localhost or trusted hosts.
 Update the database software.
 Stop or uninstall the service if no longer used.
-Port 3351/TCP
 
+
+**Port 3351/TCP**
 **Detected Service**
 
 Pervasive SQL Btrieve Engine
@@ -205,8 +208,9 @@ Unauthorized users could access database files if improperly configured.
 Verify whether any installed application still depends on it.
 Restrict network access.
 Remove the service if it is no longer required.
-Port 7070/TCP
 
+
+**Port 7070/TCP**
 **Detected Service**
 
 SSL/RealServer (uncertain detection)
