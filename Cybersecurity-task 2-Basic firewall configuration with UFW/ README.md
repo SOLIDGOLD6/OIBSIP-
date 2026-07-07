@@ -18,13 +18,17 @@ Its main purpose is to **reduce your attack surface**: by default, a good firewa
 
 ## 2. Walkthrough of the Screenshots
 
-### Image 1 — Installing WSL
+Installing WSL
+<img width="678" height="253" alt="1" src="https://github.com/user-attachments/assets/4fd47ca4-6ea3-4b26-a0db-a222368d0c93" />
+
 ```
 Downloading: Windows Subsystem for Linux 2.7.10
 ```
 This is the very first step: installing **WSL (Windows Subsystem for Linux)** itself via `wsl.exe` on Windows. WSL lets you run a real Ubuntu Linux environment directly inside Windows, which is why all the following commands are run from an Ubuntu shell (`/mnt/c/Users/rikho`) even though the machine is Windows.
 
-### Image 2 — Installing UFW and setting the first rules
+Installing UFW and setting the first rules
+<img width="852" height="636" alt="2" src="https://github.com/user-attachments/assets/2e8c2e98-faea-4f7f-82af-cf0b5947fb64" />
+
 ```bash
 sudo apt install ufw
 sudo ufw enable
@@ -37,9 +41,11 @@ Step by step:
 1. **`sudo apt install ufw`** — installs the UFW package from Ubuntu's repositories.
 2. **`sudo ufw enable`** — turns the firewall on and enables it to start automatically on boot.
 3. **`sudo ufw allow ssh`** — allows incoming traffic on port 22 (SSH), so you can still remotely log into the machine.
-4. **`sudo ufw deny http`** / **`sudo ufw allow http`** / **`sudo ufw deny http`** — these three commands are the user experimenting with the HTTP (port 80) rule, flip-flopping between deny and allow while getting a feel for how UFW rules work. The final state after this sequence is **deny http**, but this gets revisited again in the next image.
+4. **`sudo ufw deny http`** / **`sudo ufw allow http`** / **`sudo ufw deny http`** — these three commands are an experimentation with the HTTP (port 80) rule, flip-flopping between deny and allow while getting a feel for how UFW rules work. The final state after this sequence is **deny http**, but this gets revisited again in the next image.
 
-### Image 3 — Refining the rules and checking status
+Refining the rules and checking status
+<img width="888" height="447" alt="3" src="https://github.com/user-attachments/assets/36dde52a-85c0-4280-82e1-76d91cdfb7d9" />
+
 ```bash
 sudo ufw deny http
 sudo ufw allow https
@@ -61,45 +67,19 @@ sudo ufw status verbose
 
 It also shows the **defaults**: `deny (incoming)`, `allow (outgoing)` — meaning any port not explicitly listed is blocked for incoming connections, while the machine itself is still free to reach out to the internet.
 
-### Image 4 — Turning the rules into a reusable script
+Turning the rules into a reusable script
+<img width="791" height="680" alt="4" src="https://github.com/user-attachments/assets/dd50eb7c-c9e0-4e7d-bbdf-b7d1fe4b03dd" />
+
 ```bash
 nano ufw_configuration.sh
 chmod +x ufw_configuration.sh
 ./ufw_configuration.sh
 ```
 1. **`nano ufw_configuration.sh`** — opens the nano text editor to write a script that automates all the UFW commands used so far, so they don't have to be typed manually every time.
-2. **`chmod +x ufw_configuration.sh`** — makes the script executable.
-3. **`./ufw_configuration.sh`** — runs the script. Because the script itself contains `sudo` commands, Linux prompts for authentication mid-run:
-   ```
-   [sudo] authenticate] Password:
-   ```
-   Once the password is entered, the script proceeds cleanly:
-   - It runs `apt update`, which checks the four configured repositories (`security`, `main`, `updates`, `backports`) and reports **59 packages can be upgraded** (informational only — it doesn't upgrade them, since the script only asks for `ufw` specifically).
-   - It confirms **`ufw is already the newest version`**, so nothing new needs to be installed.
-   - UFW then **backs up the existing rule files** (`user.rules`, `before.rules`, `after.rules`, and their IPv6 equivalents) before applying changes — this is a safety measure so the previous configuration can be restored if needed.
-   - **Default incoming policy changed to 'deny'** and **default outgoing policy changed to 'allow'** — these are applied fresh by the script.
-   - All the individual allow/deny rules are applied (**"Rules updated"** appears for each one, plus its IPv6 counterpart).
-   - Finally, **"Firewall is active and enabled on system startup"** confirms UFW is running and will persist across reboots.
 
-   This run is clean — every line of the script executed successfully with no errors.
+ The full, corrected script contents
+ <img width="495" height="441" alt="6" src="https://github.com/user-attachments/assets/1b93bfb4-3e00-4764-91fa-b9e97284b905" />
 
-### Image 5 — Final confirmation
-```bash
-sudo ufw status verbose
-```
-This is the continuation of the script's output, ending with the final rule table — matching what was configured manually in Image 3:
-
-| To | Action | From |
-|---|---|---|
-| 22/tcp | ALLOW IN | Anywhere |
-| 80/tcp | DENY IN | Anywhere |
-| 443 | ALLOW IN | Anywhere |
-| Anywhere | DENY IN | 192.168.1.100 |
-| *(IPv6 equivalents)* | | |
-
-This confirms the script **fully and correctly reproduced** the intended firewall configuration end-to-end, including the IP-specific block — this time applied *by the script itself*, not left over from an earlier manual command.
-
-### Image 6 — The full, corrected script contents
 ```bash
 #!/bin/bash
 sudo apt update
@@ -120,14 +100,48 @@ sudo ufw --force enable
 sudo ufw status verbose
 ```
 This is the complete automation script, now free of the earlier typo (the line correctly reads `sudo ufw deny from 192.168.1.100`). It:
-1. Updates package lists and (re)installs UFW.
-2. **Resets** UFW to a clean slate (`--force reset`) so old rules don't linger or conflict with a fresh run.
-3. Sets the **default policies** (deny incoming, allow outgoing).
-4. Applies the SSH/HTTP/HTTPS/IP-block rules.
-5. Enables UFW (`--force` skips the "are you sure you want to proceed with operation" prompt, which is necessary for unattended/scripted execution).
-6. Prints the final status for verification.
+- Updates package lists and (re)installs UFW.
+- **Resets** UFW to a clean slate (`--force reset`) so old rules don't linger or conflict with a fresh run.
+- Sets the **default policies** (deny incoming, allow outgoing).
+- Applies the SSH/HTTP/HTTPS/IP-block rules.
+- Enables UFW (`--force` skips the "are you sure you want to proceed with operation" prompt, which is necessary for unattended/scripted execution).
+- Prints the final status for verification.
 
 Because every line now uses valid `sudo` syntax, the script is fully self-contained — it doesn't depend on any rule having been set manually beforehand, and running it on a brand-new machine would produce the exact same end state shown in Images 4 and 5.
+
+2. **`chmod +x ufw_configuration.sh`** — makes the script executable.
+3. **`./ufw_configuration.sh`** — runs the script. Because the script itself contains `sudo` commands, Linux prompts for authentication mid-run:
+   ```
+   [sudo] authenticate] Password:
+   ```
+   Once the password is entered, the script proceeds cleanly:
+   - It runs `apt update`, which checks the four configured repositories (`security`, `main`, `updates`, `backports`) and reports **59 packages can be upgraded** (informational only — it doesn't upgrade them, since the script only asks for `ufw` specifically).
+   - It confirms **`ufw is already the newest version`**, so nothing new needs to be installed.
+   - UFW then **backs up the existing rule files** (`user.rules`, `before.rules`, `after.rules`, and their IPv6 equivalents) before applying changes — this is a safety measure so the previous configuration can be restored if needed.
+   - **Default incoming policy changed to 'deny'** and **default outgoing policy changed to 'allow'** — these are applied fresh by the script.
+   - All the individual allow/deny rules are applied (**"Rules updated"** appears for each one, plus its IPv6 counterpart).
+   - Finally, **"Firewall is active and enabled on system startup"** confirms UFW is running and will persist across reboots.
+
+   This run is clean — every line of the script executed successfully with no errors.
+
+ Final confirmation
+ <img width="668" height="556" alt="5" src="https://github.com/user-attachments/assets/f9a3aa5f-27ea-4c0b-ae12-b6b4d7a689c3" />
+
+```bash
+sudo ufw status verbose
+```
+This is the continuation of the script's output, ending with the final rule table — matching what was configured manually in Image 3:
+
+| To | Action | From |
+|---|---|---|
+| 22/tcp | ALLOW IN | Anywhere |
+| 80/tcp | DENY IN | Anywhere |
+| 443 | ALLOW IN | Anywhere |
+| Anywhere | DENY IN | 192.168.1.100 |
+| *(IPv6 equivalents)* | | |
+
+This confirms the script **fully and correctly reproduced** the intended firewall configuration end-to-end, including the IP-specific block — this time applied *by the script itself*, not left over from an earlier manual command.
+
 
 ---
 
