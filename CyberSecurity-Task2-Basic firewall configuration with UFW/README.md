@@ -16,15 +16,16 @@ Its main purpose is to **reduce your attack surface**: by default, a good firewa
 
 ---
 
-## 2. Walkthrough of the Screenshots
+<img width="678" height="253" alt="1" src="https://github.com/user-attachments/assets/5e5ca0f3-bbb5-4e60-b06c-c0b542d7afdf" />
 
-### Image 1 — Installing WSL
 ```
 Downloading: Windows Subsystem for Linux 2.7.10
 ```
 This is the very first step: installing **WSL (Windows Subsystem for Linux)** itself via `wsl.exe` on Windows. WSL lets you run a real Ubuntu Linux environment directly inside Windows, which is why all the following commands are run from an Ubuntu shell (`/mnt/c/Users/rikho`) even though the machine is Windows.
 
-### Image 2 — Installing UFW and setting the first rules
+ Installing UFW and setting the first rules
+ <img width="852" height="636" alt="2" src="https://github.com/user-attachments/assets/4d6eee1f-96f5-4482-ac58-8702475b667e" />
+
 ```bash
 sudo apt install ufw
 sudo ufw enable
@@ -39,7 +40,9 @@ Step by step:
 3. **`sudo ufw allow ssh`** — allows incoming traffic on port 22 (SSH), so you can still remotely log into the machine.
 4. **`sudo ufw deny http`** / **`sudo ufw allow http`** / **`sudo ufw deny http`** — these three commands are the user experimenting with the HTTP (port 80) rule, flip-flopping between deny and allow while getting a feel for how UFW rules work. The final state after this sequence is **deny http**, but this gets revisited again in the next image.
 
-### Image 3 — Refining the rules and checking status
+ Refining the rules and checking status
+ <img width="888" height="447" alt="3" src="https://github.com/user-attachments/assets/ba80ff5c-fdf0-44fc-b038-0a09687c23ce" />
+
 ```bash
 sudo ufw deny http
 sudo ufw allow https
@@ -61,7 +64,9 @@ sudo ufw status verbose
 
 It also shows the **defaults**: `deny (incoming)`, `allow (outgoing)` — meaning any port not explicitly listed is blocked for incoming connections, while the machine itself is still free to reach out to the internet.
 
-### Image 4 — Turning the rules into a reusable script
+Turning the rules into a reusable script
+<img width="752" height="627" alt="4" src="https://github.com/user-attachments/assets/c7d941e0-89fe-45f1-b331-7b59cce02b3a" />
+
 ```bash
 nano ufw_configuration.sh
 chmod +x ufw_configuration.sh
@@ -80,13 +85,17 @@ chmod +x ufw_configuration.sh
    ```
    This is a **typo bug**: line 13 of the script was meant to say `sudo ufw deny from 192.168.1.100`, but it was mistyped as `duso ufw deny from 192.168.1.100`. Since `duso` isn't a real command, that line silently failed. It didn't break the script — bash just reports the error and moves on to the next line.
 
-### Image 5 — Final confirmation
+Final confirmation
+<img width="679" height="526" alt="5" src="https://github.com/user-attachments/assets/430b2530-ba5b-41cf-8f13-2f419c358e99" />
+
 ```bash
 sudo ufw status verbose
 ```
 This shows the same final rule set as Image 3 (22 allow, 80 deny, 443 allow, plus IPv6 versions). The rule against `192.168.1.100` had **already been applied manually back in Image 3**, so even though the script's line 13 failed due to the typo, the firewall still shows the correct end state — it just wasn't re-applied by the script itself.
 
-### Image 6 — The full script contents
+ The full script contents
+ <img width="562" height="402" alt="6" src="https://github.com/user-attachments/assets/2bc72556-757f-4084-a9d5-74622d730717" />
+
 ```bash
 #!/bin/bash
 sudo apt update
