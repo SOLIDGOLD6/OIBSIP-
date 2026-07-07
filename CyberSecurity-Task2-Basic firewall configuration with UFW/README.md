@@ -26,19 +26,12 @@ This is the very first step: installing **WSL (Windows Subsystem for Linux)** it
  Installing UFW and setting the first rules
  <img width="852" height="636" alt="2" src="https://github.com/user-attachments/assets/4d6eee1f-96f5-4482-ac58-8702475b667e" />
 
-```bash
-sudo apt install ufw
-sudo ufw enable
-sudo ufw allow ssh
-sudo ufw deny http
-sudo ufw allow http
-sudo ufw deny http
 ```
 Step by step:
 1. **`sudo apt install ufw`** — installs the UFW package from Ubuntu's repositories.
 2. **`sudo ufw enable`** — turns the firewall on and enables it to start automatically on boot.
 3. **`sudo ufw allow ssh`** — allows incoming traffic on port 22 (SSH), so you can still remotely log into the machine.
-4. **`sudo ufw deny http`** / **`sudo ufw allow http`** / **`sudo ufw deny http`** — these three commands are the user experimenting with the HTTP (port 80) rule, flip-flopping between deny and allow while getting a feel for how UFW rules work. The final state after this sequence is **deny http**, but this gets revisited again in the next image.
+4. **`sudo ufw deny http`** / **`sudo ufw allow http`** / **`sudo ufw deny http`** — these three commands are an experimentation with the HTTP (port 80) rule, flip-flopping between deny and allow while getting a feel for how UFW rules work. The final state after this sequence is **deny http**.
 
  Refining the rules and checking status
  <img width="888" height="447" alt="3" src="https://github.com/user-attachments/assets/ba80ff5c-fdf0-44fc-b038-0a09687c23ce" />
@@ -73,27 +66,7 @@ chmod +x ufw_configuration.sh
 ./ufw_configuration.sh
 ```
 1. **`nano ufw_configuration.sh`** — opens the nano text editor to write a script that automates all the UFW commands used so far (so they don't have to be typed manually every time).
-2. **`chmod +x ufw_configuration.sh`** — makes the script executable.
-3. **`./ufw_configuration.sh`** — runs the script. The output shows UFW backing up the old rule files (`user.rules`, `before.rules`, etc.) before applying the new ones, then applying:
-   - Default incoming policy → `deny`
-   - Default outgoing policy → `allow`
-   - The allow/deny rules from before
-   
-   However, one line fails:
-   ```
-   ./ufw_configuration.sh: line 13: duso: command not found
-   ```
-   This is a **typo bug**: line 13 of the script was meant to say `sudo ufw deny from 192.168.1.100`, but it was mistyped as `duso ufw deny from 192.168.1.100`. Since `duso` isn't a real command, that line silently failed. It didn't break the script — bash just reports the error and moves on to the next line.
-
-Final confirmation
-<img width="679" height="526" alt="5" src="https://github.com/user-attachments/assets/430b2530-ba5b-41cf-8f13-2f419c358e99" />
-
-```bash
-sudo ufw status verbose
-```
-This shows the same final rule set as Image 3 (22 allow, 80 deny, 443 allow, plus IPv6 versions). The rule against `192.168.1.100` had **already been applied manually back in Image 3**, so even though the script's line 13 failed due to the typo, the firewall still shows the correct end state — it just wasn't re-applied by the script itself.
-
- The full script contents
+    The full script contents
  <img width="562" height="402" alt="6" src="https://github.com/user-attachments/assets/2bc72556-757f-4084-a9d5-74622d730717" />
 
 ```bash
@@ -116,14 +89,35 @@ sudo ufw --force enable
 sudo ufw status verbose
 ```
 This is the complete automation script. It:
-1. Updates package lists and (re)installs UFW.
-2. **Resets** UFW to a clean slate (`--force reset`) so old rules don't linger.
-3. Sets the **default policies**.
-4. Applies the SSH/HTTP/HTTPS/IP-block rules.
-5. Enables UFW (`--force` skips the "are you sure" prompt, useful for scripting).
-6. Prints the final status for verification.
+- Updates package lists and (re)installs UFW.
+- **Resets** UFW to a clean slate (`--force reset`) so old rules don't linger.
+- Sets the **default policies**.
+- Applies the SSH/HTTP/HTTPS/IP-block rules.
+- Enables UFW (`--force` skips the "are you sure" prompt, useful for scripting).
+- Prints the final status for verification.
 
 **Fix needed:** change `duso ufw deny from 192.168.1.100` to `sudo ufw deny from 192.168.1.100` so the script is fully self-contained and doesn't rely on that rule already existing from a manual command.
+3. **`chmod +x ufw_configuration.sh`** — makes the script executable.
+4. **`./ufw_configuration.sh`** — runs the script. The output shows UFW backing up the old rule files (`user.rules`, `before.rules`, etc.) before applying the new ones, then applying:
+   - Default incoming policy → `deny`
+   - Default outgoing policy → `allow`
+   - The allow/deny rules from before
+   
+   However, one line fails:
+   ```
+   ./ufw_configuration.sh: line 13: duso: command not found
+   ```
+   This is a **typo bug**: line 13 of the script was meant to say `sudo ufw deny from 192.168.1.100`, but it was mistyped as `duso ufw deny from 192.168.1.100`. Since `duso` isn't a real command, that line silently failed. It didn't break the script — bash just reports the error and moves on to the next line.
+
+Final confirmation
+<img width="679" height="526" alt="5" src="https://github.com/user-attachments/assets/430b2530-ba5b-41cf-8f13-2f419c358e99" />
+
+```bash
+sudo ufw status verbose
+```
+This shows the same final rule set as Image 3 (22 allow, 80 deny, 443 allow, plus IPv6 versions). The rule against `192.168.1.100` had **already been applied manually back in Image 3**, so even though the script's line 13 failed due to the typo, the firewall still shows the correct end state — it just wasn't re-applied by the script itself.
+
+
 
 ---
 
