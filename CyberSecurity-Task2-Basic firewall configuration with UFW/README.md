@@ -67,7 +67,8 @@ chmod +x ufw_configuration.sh
 ```
 1. **`nano ufw_configuration.sh`** — opens the nano text editor to write a script that automates all the UFW commands used so far (so they don't have to be typed manually every time).
     The full script contents
- <img width="562" height="402" alt="6" src="https://github.com/user-attachments/assets/2bc72556-757f-4084-a9d5-74622d730717" />
+ <img width="495" height="441" alt="6" src="https://github.com/user-attachments/assets/ee320308-9056-47fc-be0f-fc4b5d5055f8" />
+
 
 ```bash
 #!/bin/bash
@@ -82,7 +83,7 @@ sudo ufw default allow outgoing
 sudo ufw allow ssh
 sudo ufw deny http
 sudo ufw allow https
-duso ufw deny from 192.168.1.100      # <-- typo, should be "sudo"
+sudo ufw deny from 192.168.1.100    
 
 sudo ufw --force enable
 
@@ -96,7 +97,6 @@ This is the complete automation script. It:
 - Enables UFW (`--force` skips the "are you sure" prompt, useful for scripting).
 - Prints the final status for verification.
 
-**Fix needed:** change `duso ufw deny from 192.168.1.100` to `sudo ufw deny from 192.168.1.100` so the script is fully self-contained and doesn't rely on that rule already existing from a manual command.
 3. **`chmod +x ufw_configuration.sh`** — makes the script executable.
 4. **`./ufw_configuration.sh`** — runs the script. The output shows UFW backing up the old rule files (`user.rules`, `before.rules`, etc.) before applying the new ones, then applying:
    - Default incoming policy → `deny`
