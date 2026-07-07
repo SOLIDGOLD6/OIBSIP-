@@ -77,7 +77,8 @@ chmod +x ufw_configuration.sh
 ```
 1. **`nano ufw_configuration.sh`** — opens the nano text editor to write a script that automates all the UFW commands used so far, so they don't have to be typed manually every time.
 
- The full, corrected script contents
+ The complete script contents
+ 
  <img width="495" height="441" alt="6" src="https://github.com/user-attachments/assets/1b93bfb4-3e00-4764-91fa-b9e97284b905" />
 
 ```bash
@@ -125,6 +126,7 @@ Because every line now uses valid `sudo` syntax, the script is fully self-contai
    This run is clean — every line of the script executed successfully with no errors.
 
  Final confirmation
+ 
  <img width="668" height="556" alt="5" src="https://github.com/user-attachments/assets/f9a3aa5f-27ea-4c0b-ae12-b6b4d7a689c3" />
 
 ```bash
