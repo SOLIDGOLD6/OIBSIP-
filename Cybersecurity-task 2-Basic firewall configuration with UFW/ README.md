@@ -16,9 +16,9 @@ Its main purpose is to **reduce your attack surface**: by default, a good firewa
 
 ---
 
-## 2. Walkthrough of the Screenshots
+## 2. Installing WSL
 
-Installing WSL
+
 <img width="678" height="253" alt="1" src="https://github.com/user-attachments/assets/4fd47ca4-6ea3-4b26-a0db-a222368d0c93" />
 
 ```
