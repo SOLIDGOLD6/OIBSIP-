@@ -1,1 +1,106 @@
+Skip to content
+SOLIDGOLD6
+OIBSIP-
+Repository navigation
+Code
+Issues
+Pull requests
+Agents
+Actions
+Projects
+Security and quality
+Insights
+Settings
+OIBSIP-/CyberSecurity-Task1-Basic Network Scanning with Nmap
+/
+README
+in
+main
 
+Edit
+
+Preview
+Indent mode
+
+Spaces
+Indent size
+
+2
+Line wrap mode
+
+No wrap
+Editing README file contents
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+# Nmap Installation and Basic Scanning Guide
+
+This document walks through installing **Nmap** (with the Zenmap GUI) on Windows, and then demonstrates three basic scan types run against `localhost (127.0.0.1)`.
+
+> **Note:** To view the images below, place the screenshot files in the same folder as this markdown file, using the filenames referenced (`nmap_1.png` through `nmap_6.png`, `scan.png`, `sV.png`, `O.png`).
+
+---
+
+## Part 1: Installing Nmap
+
+### Step 1 – Choose Components
+<img width="669" height="492" alt="nmap 1" src="https://github.com/user-attachments/assets/13d82075-8729-4840-b48d-66085763186d" />
+
+
+The Nmap Setup wizard's **Choose Components** screen. Here you select which features to install — by default this includes the **Nmap Core Files**, **Register Nmap Path**, **Network Performance** improvements, **Ncat**, **Nping**, and **Zenmap (GUI Frontend)**. The total space required is shown as 88.1 MB. Click **Next** to continue.
+
+### Step 2 – Choose Install Location
+<img width="558" height="431" alt="nmap 2" src="https://github.com/user-attachments/assets/5c6d8e17-671d-4be5-bba0-05466fe1518e" />
+
+
+The **Choose Install Location** screen lets you pick the destination folder for Nmap. The default path is `C:\Program Files (x86)\Nmap`. It also displays the space required (88.1 MB) versus the space available (78.7 GB). Clicking **Install** begins the installation process.
+
+### Step 3 – Installing
+<img width="553" height="434" alt="nmap 3" src="https://github.com/user-attachments/assets/d449ca65-c7a5-4ea0-adbc-33255a4de88c" />
+
+
+The **Installing** progress screen shows the live extraction status of Nmap's files (in this case, extracting `CHANGELOG` at 93%). A progress bar tracks overall completion, and a **Show details** button reveals a verbose log of the installation steps.
+
+### Step 4 – Installation Complete
+<img width="573" height="449" alt="nmap 4" src="https://github.com/user-attachments/assets/b1e26d07-f152-4224-ad9d-0ee6acbb8868" />
+
+
+Once all files have been extracted and installed, the **Installation Complete** screen appears with a fully filled green progress bar, confirming that "Setup was completed successfully." Click **Next** to proceed.
+
+### Step 5 – Create Shortcuts
+<img width="552" height="433" alt="nmap 5" src="https://github.com/user-attachments/assets/ace4fa55-9ed6-4751-a9f3-f14862f292a3" />
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+ 
